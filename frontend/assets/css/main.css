@@ -1,0 +1,91 @@
+/* راجع docs/design/UI-UX.md — هذا الملف هو المصدر الوحيد لألوان Ware.
+   عند بناء Cosmetic Lady أو Brand لاحقاً: غيّر فقط قيم --color-primary و--color-accent هنا. */
+
+:root {
+  --color-primary: #0c447c;
+  --color-accent: #ba7517;
+  --color-neutral: #2c2c2a;
+  --color-background: #f1efe8;
+  --color-success: #3b6d11;
+  --color-danger: #b3261e;
+  --color-warning: #e0a94a;
+  --color-surface: #ffffff;
+  --radius: 10px;
+  --font-family: "Cairo", "Tajawal", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--color-background);
+  color: var(--color-neutral);
+  direction: rtl;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: none;
+  font-family: var(--font-family);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-accent {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn-accent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid #e5e2d9;
+  padding: 16px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.text-muted {
+  color: #6b6b68;
+  font-size: 13px;
+}
+
+.badge-success {
+  background: var(--color-success);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.badge-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+}

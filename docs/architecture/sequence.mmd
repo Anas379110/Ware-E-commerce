@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant U as المستخدم (Nuxt)
+    participant A as Django API
+    participant P as بوابة الدفع (Stripe/شام كاش)
+    participant D as PostgreSQL
+
+    U->>A: POST /checkout (عناصر السلة + عنوان الشحن)
+    A->>D: إنشاء Order (status=pending)
+    A->>P: طلب Payment Session/Intent
+    P-->>A: رابط/بيانات الدفع
+    A-->>U: تحويل المستخدم لبوابة الدفع
+    U->>P: إتمام الدفع مباشرة على البوابة
+    P-->>A: Webhook تأكيد الدفع (موقَّع)
+    A->>A: التحقق من صحة توقيع الـ Webhook
+    alt توقيع صالح ودفع ناجح
+        A->>D: تحديث Order إلى confirmed + خصم المخزون
+        A->>U: إشعار بريد إلكتروني بالتأكيد
+    else توقيع غير صالح أو دفع فاشل
+        A->>D: إبقاء Order كـ pending / تحديثه إلى failed
+        A-->>U: رسالة خطأ واضحة عند الاستعلام عن حالة الطلب
+    end

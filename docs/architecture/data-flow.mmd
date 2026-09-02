@@ -1,0 +1,14 @@
+flowchart LR
+    Visitor[زائر] -->|تصفح| Catalog[Catalog API]
+    Catalog --> DB[(PostgreSQL)]
+    Visitor -->|إضافة للسلة| Cart[Cart API]
+    Cart --> Redis[(Redis)]
+    Visitor -->|Checkout| Orders[Orders API]
+    Orders --> DB
+    Orders -->|طلب دفع| Payments[Payments API]
+    Payments -->|Outbound| Gateway[Stripe / شام كاش]
+    Gateway -->|Webhook Inbound| Payments
+    Payments -->|تحديث الحالة| DB
+    Payments -->|إشعار| Notifications[Notifications]
+    Admin[مدير المنصة] -->|CRUD| Catalog
+    Admin -->|تحديث الحالة| Orders

@@ -1,0 +1,32 @@
+graph TB
+    subgraph "جهاز المستخدم"
+        Browser[متصفح / PWA مثبَّت]
+    end
+
+    subgraph "Vercel"
+        Nuxt[Nuxt PWA<br/>Storefront]
+    end
+
+    subgraph "Railway / Render"
+        DjangoAPI[Django REST API]
+        DjangoAdmin[Django Admin<br/>لوحة الإدارة]
+    end
+
+    subgraph "قواعد البيانات"
+        Postgres[(PostgreSQL)]
+        Redis[(Redis<br/>Cache / Session / Cart)]
+    end
+
+    subgraph "خدمات خارجية"
+        StripeAPI[Stripe API]
+        ShamCashAPI[شام كاش API]
+    end
+
+    Browser -->|HTTPS| Nuxt
+    Nuxt -->|HTTPS/JSON| DjangoAPI
+    DjangoAPI --> Postgres
+    DjangoAPI --> Redis
+    DjangoAPI --> StripeAPI
+    DjangoAPI --> ShamCashAPI
+    DjangoAdmin --> Postgres
+    Browser -.->|دخول مباشر (المدير فقط)| DjangoAdmin

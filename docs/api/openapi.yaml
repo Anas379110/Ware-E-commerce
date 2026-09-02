@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  title: Ware API
+  version: "1.0.0"
+  description: API خلفية منصة Ware للتجارة الإلكترونية — يستهلكه Nuxt Storefront.
+servers:
+  - url: /api/v1
+paths:
+  /products:
+    get:
+      summary: قائمة المنتجات
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: min_price
+          in: query
+          schema:
+            type: number
+        - name: max_price
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: قائمة منتجات مصفّحة (Paginated)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductSummary"
+
+  /products/{slug}:
+    get:
+      summary: تفاصيل منتج
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: تفاصيل المنتج
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+        "404":
+          description: المنتج غير موجود
+
+  /cart:
+    get:
+      summary: عرض السلة الحالية
+      responses:
+        "200":
+          description: محتوى السلة
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/items:
+    post:
+      summary: إضافة منتج للسلة
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, quantity]
+              properties:
+                product_id:
+                  type: integer
+                quantity:
+                  type: integer
+                  minimum: 1
+      responses:
+        "201":
+          description: تمت الإضافة
+        "400":
+          description: كمية غير صالحة أو مخزون غير كافٍ
+
+  /checkout:
+    post:
+      summary: إنشاء طلب من السلة الحالية
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [address_id]
+              properties:
+                address_id:
+                  type: integer
+      responses:
+        "201":
+          description: تم إنشاء الطلب بحالة pending
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /payments/stripe/create-session:
+    post:
+      summary: إنشاء جلسة دفع Stripe لطلب موجود
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [order_id]
+              properties:
+                order_id:
+                  type: integer
+      responses:
+        "200":
+          description: بيانات جلسة الدفع (رابط التحويل)
+
+  /payments/stripe/webhook:
+    post:
+      summary: استقبال تأكيد الدفع من Stripe (موقَّع — لا يُستدعى من Nuxt)
+      responses:
+        "200":
+          description: تم استلام ومعالجة الـ Webhook
+        "400":
+          description: توقيع غير صالح
+
+  /orders:
+    get:
+      summary: طلبات المستخدم الحالي
+      responses:
+        "200":
+          description: قائمة الطلبات
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+components:
+  schemas:
+    ProductSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        price:
+          type: number
+        primary_image_url:
+          type: string
+        in_stock:
+          type: boolean
+
+    ProductDetail:
+      allOf:
+        - $ref: "#/components/schemas/ProductSummary"
+        - type: object
+          properties:
+            description:
+              type: string
+            images:
+              type: array
+              items:
+                type: string
+            category:
+              type: string
+
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              product_id:
+                type: integer
+              quantity:
+                type: integer
+              unit_price:
+                type: number
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum: [pending, confirmed, shipped, delivered, cancelled, failed]
+        total_amount:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

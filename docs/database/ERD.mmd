@@ -1,0 +1,81 @@
+erDiagram
+    USER ||--o{ ADDRESS : has
+    USER ||--o| CART : owns
+    USER ||--o{ ORDER : places
+    CART ||--o{ CART_ITEM : contains
+    CART_ITEM }o--|| PRODUCT : references
+    CATEGORY ||--o{ CATEGORY : "parent of"
+    CATEGORY ||--o{ PRODUCT : classifies
+    PRODUCT ||--o{ PRODUCT_IMAGE : has
+    ORDER ||--o{ ORDER_ITEM : contains
+    ORDER_ITEM }o--|| PRODUCT : references
+    ORDER ||--|| PAYMENT : "paid via"
+    ORDER }o--|| ADDRESS : "shipped to"
+
+    USER {
+        int id PK
+        string email
+        string password_hash
+        string full_name
+        string phone
+        bool is_active
+    }
+    ADDRESS {
+        int id PK
+        int user_id FK
+        string city
+        string street_details
+        bool is_default
+    }
+    CATEGORY {
+        int id PK
+        int parent_id FK
+        string name
+        string slug
+    }
+    PRODUCT {
+        int id PK
+        int category_id FK
+        string name
+        string slug
+        decimal price
+        int stock_quantity
+        bool is_active
+    }
+    PRODUCT_IMAGE {
+        int id PK
+        int product_id FK
+        string image_url
+        bool is_primary
+    }
+    CART {
+        int id PK
+        int user_id FK
+    }
+    CART_ITEM {
+        int id PK
+        int cart_id FK
+        int product_id FK
+        int quantity
+    }
+    ORDER {
+        int id PK
+        int user_id FK
+        int address_id FK
+        string status
+        decimal total_amount
+    }
+    ORDER_ITEM {
+        int id PK
+        int order_id FK
+        int product_id FK
+        decimal unit_price_snapshot
+        int quantity
+    }
+    PAYMENT {
+        int id PK
+        int order_id FK
+        string provider
+        string status
+        decimal amount
+    }

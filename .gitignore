@@ -1,0 +1,33 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Claude local settings
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Node / Nuxt
+node_modules/
+.nuxt/
+.output/
+dist/
+
+# OS / Editors
+.DS_Store
+.vscode/
+.idea/
+
+# Django
+*.sqlite3
+staticfiles/
+media/
+
+# Logs
+*.log

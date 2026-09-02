@@ -1,0 +1,13 @@
+graph TB
+    User[المستخدم / الزائر]
+    Admin[مدير المنصة]
+    Ware[نظام Ware<br/>Nuxt PWA + Django API]
+    Stripe[Stripe]
+    ShamCash[شام كاش]
+    Email[خدمة البريد الإلكتروني]
+
+    User -->|تصفح، شراء، دفع| Ware
+    Admin -->|إدارة الكتالوج والطلبات| Ware
+    Ware -->|طلب دفع + استقبال Webhook| Stripe
+    Ware -->|طلب دفع + استقبال Webhook| ShamCash
+    Ware -->|إرسال إشعار تأكيد| Email
