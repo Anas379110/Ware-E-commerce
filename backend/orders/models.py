@@ -17,6 +17,10 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="orders")
     address = models.ForeignKey(Address, on_delete=models.PROTECT, related_name="orders")
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    coupon = models.ForeignKey(
+        "promotions.Coupon", on_delete=models.SET_NULL, null=True, blank=True, related_name="orders"
+    )
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -27,6 +31,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f"طلب #{self.pk} — {self.get_status_display()}"
+
+    @property
+    def subtotal(self):
+        return self.total_amount + self.discount_amount
 
 
 class OrderItem(models.Model):

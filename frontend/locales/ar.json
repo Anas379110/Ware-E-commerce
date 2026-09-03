@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "cart": "السلة",
+    "wishlist": "المفضلة",
+    "login": "دخول",
+    "orders": "طلباتي",
+    "logout": "خروج",
+    "search_placeholder": "ابحث عن منتج..."
+  },
+  "home": {
+    "title": "كل المنتجات الصناعية والتجارية السورية",
+    "subtitle": "تصفّح، اختر، وادفع بثقة عبر Stripe أو شام كاش.",
+    "categories": "الأقسام",
+    "all": "الكل",
+    "loading": "جارٍ تحميل المنتجات...",
+    "empty": "لا توجد منتجات مطابقة — جرّب تصنيفاً أو بحثاً مختلفاً."
+  },
+  "product": {
+    "add_to_cart": "أضف للسلة",
+    "adding": "جارٍ الإضافة...",
+    "added": "تمت الإضافة للسلة.",
+    "add_failed": "تعذّرت إضافة المنتج — تحقق من الكمية المتوفرة.",
+    "in_stock": "متوفر",
+    "out_of_stock": "غير متوفر حالياً",
+    "reviews": "التقييمات",
+    "no_reviews": "لا توجد تقييمات بعد — كن أول من يقيّم هذا المنتج.",
+    "add_review": "أضف تقييمك",
+    "rating": "التقييم",
+    "comment": "تعليقك (اختياري)",
+    "submit_review": "إرسال التقييم",
+    "related": "منتجات ذات صلة",
+    "add_to_wishlist": "أضف للمفضلة",
+    "remove_from_wishlist": "إزالة من المفضلة"
+  },
+  "cart": {
+    "title": "سلتي",
+    "empty": "سلتك فارغة.",
+    "browse": "تصفّح المنتجات",
+    "each": "للقطعة",
+    "remove": "حذف",
+    "total": "الإجمالي",
+    "checkout": "إتمام الشراء"
+  },
+  "checkout": {
+    "title": "إتمام الشراء",
+    "address_section": "عنوان الشحن",
+    "no_address": "لا يوجد عنوان محفوظ بعد — أضف عنواناً جديداً بالأسفل.",
+    "add_address": "إضافة عنوان جديد",
+    "full_name": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "city": "المدينة",
+    "street_details": "تفاصيل العنوان",
+    "save_address": "حفظ العنوان",
+    "payment_section": "وسيلة الدفع",
+    "stripe": "بطاقة ائتمانية (Stripe)",
+    "sham_cash": "شام كاش",
+    "coupon_section": "كوبون الخصم",
+    "coupon_placeholder": "أدخل رمز الكوبون",
+    "apply_coupon": "تطبيق",
+    "coupon_applied": "تم تطبيق الخصم",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "pay_now": "ادفع الآن",
+    "processing": "جارٍ المعالجة..."
+  },
+  "account": {
+    "login_title": "تسجيل الدخول",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "login_button": "دخول",
+    "logging_in": "جارٍ الدخول...",
+    "no_account": "ليس لديك حساب؟",
+    "create_account": "أنشئ حساباً جديداً",
+    "register_title": "إنشاء حساب",
+    "register_button": "إنشاء الحساب",
+    "registering": "جارٍ الإنشاء...",
+    "have_account": "لديك حساب؟",
+    "go_login": "سجّل الدخول",
+    "login_error": "بيانات الدخول غير صحيحة."
+  },
+  "orders": {
+    "title": "طلباتي",
+    "empty": "لا توجد طلبات سابقة بعد.",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكَّد",
+      "shipped": "تم الشحن",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغى",
+      "failed": "فشل الدفع"
+    }
+  },
+  "footer": {
+    "tagline": "منصة التجارة الإلكترونية للمنتجات الصناعية والتجارية السورية"
+  }
+}
