@@ -3,13 +3,27 @@ export default defineNuxtConfig({
   compatibilityDate: "2026-01-01",
   devtools: { enabled: true },
 
-  modules: ["@pinia/nuxt", "@vite-pwa/nuxt"],
+  modules: ["@pinia/nuxt", "@vite-pwa/nuxt", "@nuxtjs/i18n"],
+
+  i18n: {
+    locales: [
+      { code: "ar", iso: "ar-SY", name: "العربية", dir: "rtl", file: "ar.json" },
+      { code: "en", iso: "en-US", name: "English", dir: "ltr", file: "en.json" },
+    ],
+    langDir: "locales/",
+    defaultLocale: "ar",
+    strategy: "no_prefix",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "ware_i18n_redirected",
+      redirectOn: "root",
+    },
+  },
 
   css: ["~/assets/css/main.css"],
 
   app: {
     head: {
-      htmlAttrs: { lang: "ar", dir: "rtl" },
       title: "Ware — المنتجات الصناعية والتجارية السورية",
       meta: [
         { name: "theme-color", content: "#0C447C" },

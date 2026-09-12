@@ -18,16 +18,27 @@ npm run dev
 ## البنية
 | المسار | الوصف |
 |---|---|
-| `pages/index.vue` | الصفحة الرئيسية — تصفح/بحث/فلترة |
-| `pages/products/[slug].vue` | تفاصيل منتج + إضافة للسلة |
+| `pages/index.vue` | الصفحة الرئيسية — شبكة أقسام بأيقونات + تصفح/بحث/فلترة |
+| `pages/products/[slug].vue` | تفاصيل منتج + تقييمات + منتجات ذات صلة + مفضلة |
 | `pages/cart.vue` | السلة |
-| `pages/checkout.vue` | إتمام الشراء (عنوان + وسيلة دفع) — محمية بـ `middleware/auth` |
+| `pages/checkout.vue` | إتمام الشراء (عنوان + كوبون خصم + وسيلة دفع) — محمية بـ `middleware/auth` |
+| `pages/wishlist.vue` | قائمة المفضلة — محمية بـ `middleware/auth` |
 | `pages/account/login.vue` / `register.vue` | المصادقة |
-| `pages/orders/index.vue` / `[id].vue` | طلبات المستخدم |
-| `stores/auth.ts` | حالة تسجيل الدخول (JWT عبر Cookies) |
+| `pages/orders/index.vue` / `[id].vue` | طلبات المستخدم (تعرض الخصم والكوبون المُطبَّق) |
+| `stores/auth.ts` | حالة تسجيل الدخول (Access Token بالذاكرة، Refresh عبر HttpOnly Cookie) |
 | `stores/cart.ts` | حالة السلة |
+| `stores/wishlist.ts` | حالة المفضلة |
 | `composables/useApi.ts` | استدعاء موحّد لـ Django API مع إرفاق التوكن |
 | `assets/css/main.css` | Design Tokens (الألوان الرسمية لـ Ware) |
+| `components/CategoryIcon.vue` | أيقونة ديناميكية من lucide حسب اسم مخزَّن بقاعدة البيانات |
+| `components/RatingStars.vue` | نجوم تقييم قابلة لإعادة الاستخدام |
+| `locales/ar.json` / `en.json` | نصوص الواجهة بالكامل باللغتين — راجع هذه الملفات قبل إضافة أي نص جديد بالواجهة |
+
+## تعدد اللغات (i18n)
+مفعَّل عبر `@nuxtjs/i18n`. زر تبديل اللغة بالهيدر (`app.vue`) يبدّل فوراً بلا إعادة تحميل، ويُغيّر اتجاه الصفحة (RTL/LTR) تلقائياً عبر `useHead` على `<html lang>` و`<html dir>`. أي نص جديد يُضاف بالواجهة **يجب** أن يُضاف كمفتاح بـ `locales/ar.json` و`locales/en.json` معاً، لا كنص عربي أو إنجليزي ثابت بالكود مباشرة.
+
+## الأيقونات
+`lucide-vue-next` — أيقونات التصنيفات تُقرأ من حقل `Category.icon` بالخادم (اسم أيقونة نصي مثل `wrench`)، ويحوّلها `CategoryIcon.vue` لمكوّن Vue تلقائياً. عند إضافة تصنيف جديد من لوحة الإدارة، استخدم اسم أيقونة صالحاً من [مكتبة lucide](https://lucide.dev/icons) (بصيغة kebab-case، مثال: `shopping-bag`).
 
 ## ملاحظات مهمة
 - **PWA:** مفعّلة عبر `@vite-pwa/nuxt`. أضف أيقونات فعلية في `public/icons/` قبل الإطلاق (راجع `public/icons/README.txt`).

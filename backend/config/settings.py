@@ -5,7 +5,6 @@ Django settings — Ware.
 from datetime import timedelta
 from pathlib import Path
 import sys
-from urllib.parse import urlparse
 
 import environ
 
@@ -37,6 +36,9 @@ INSTALLED_APPS = [
     "orders",
     "payments",
     "notifications",
+    "reviews",
+    "wishlist",
+    "promotions",
 ]
 
 MIDDLEWARE = [
@@ -71,39 +73,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# --- Database ---
-# Use SQLite by default in local development to avoid failing on placeholder values
-# such as `postgres://user:pass@host:5432/...` that are common in template env files.
-DATABASE_URL = env("DATABASE_URL", default="")
-DATABASE_URL_LOWER = DATABASE_URL.lower()
-if not DATABASE_URL or ("host" in DATABASE_URL_LOWER and "localhost" not in DATABASE_URL_LOWER and "127.0.0.1" not in DATABASE_URL_LOWER):
-    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": str(BASE_DIR / "db.sqlite3")}}
-else:
-    DATABASES = {"default": env.db("DATABASE_URL")}
+# --- Database (PostgreSQL — راجع DECISIONS.md القرار 007) ---
+DATABASES = {
+    "default": env.db("DATABASE_URL", default="sqlite:///" + str(BASE_DIR / "db.sqlite3"))
+}
 
 # --- Redis (Cache / Sessions / Cart) ---
-# Redis is optional in local development. If it is not running, fall back to a
-# local in-memory cache so API throttling and sessions still work without a
-# separate service.
 REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
-CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+    }
+}
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-
-try:
-    import redis
-
-    client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
-    client.ping()
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": REDIS_URL,
-            "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-        }
-    }
-except Exception:
-    CACHES["default"] = {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}
 
 # أثناء تشغيل الاختبارات (python manage.py test) لا نتطلب Redis فعلياً —
 # نستخدم Cache محلي بالذاكرة بدل django-redis لتفادي الاعتماد على خدمة خارجية

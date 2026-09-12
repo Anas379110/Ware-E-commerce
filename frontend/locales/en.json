@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "home": "Home",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "login": "Login",
+    "orders": "My Orders",
+    "logout": "Logout",
+    "search_placeholder": "Search for a product..."
+  },
+  "home": {
+    "title": "All Syrian Industrial & Commercial Products",
+    "subtitle": "Browse, choose, and pay confidently via Stripe or Sham Cash.",
+    "categories": "Categories",
+    "all": "All",
+    "loading": "Loading products...",
+    "empty": "No matching products — try a different category or search."
+  },
+  "product": {
+    "add_to_cart": "Add to Cart",
+    "adding": "Adding...",
+    "added": "Added to cart.",
+    "add_failed": "Couldn't add the product — check available quantity.",
+    "in_stock": "In Stock",
+    "out_of_stock": "Currently Unavailable",
+    "reviews": "Reviews",
+    "no_reviews": "No reviews yet — be the first to review this product.",
+    "add_review": "Add Your Review",
+    "rating": "Rating",
+    "comment": "Your comment (optional)",
+    "submit_review": "Submit Review",
+    "related": "Related Products",
+    "add_to_wishlist": "Add to Wishlist",
+    "remove_from_wishlist": "Remove from Wishlist"
+  },
+  "cart": {
+    "title": "My Cart",
+    "empty": "Your cart is empty.",
+    "browse": "Browse products",
+    "each": "each",
+    "remove": "Remove",
+    "total": "Total",
+    "checkout": "Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "address_section": "Shipping Address",
+    "no_address": "No saved address yet — add one below.",
+    "add_address": "Add New Address",
+    "full_name": "Full Name",
+    "phone": "Phone Number",
+    "city": "City",
+    "street_details": "Address Details",
+    "save_address": "Save Address",
+    "payment_section": "Payment Method",
+    "stripe": "Credit Card (Stripe)",
+    "sham_cash": "Sham Cash",
+    "coupon_section": "Discount Coupon",
+    "coupon_placeholder": "Enter coupon code",
+    "apply_coupon": "Apply",
+    "coupon_applied": "Discount applied",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "pay_now": "Pay Now",
+    "processing": "Processing..."
+  },
+  "account": {
+    "login_title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "login_button": "Login",
+    "logging_in": "Logging in...",
+    "no_account": "Don't have an account?",
+    "create_account": "Create a new account",
+    "register_title": "Create Account",
+    "register_button": "Create Account",
+    "registering": "Creating...",
+    "have_account": "Already have an account?",
+    "go_login": "Login",
+    "login_error": "Invalid login credentials."
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "No previous orders yet.",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "failed": "Payment Failed"
+    }
+  },
+  "footer": {
+    "tagline": "E-commerce platform for Syrian industrial & commercial products"
+  }
+}

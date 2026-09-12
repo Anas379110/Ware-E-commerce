@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import F
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from rest_framework.views import APIView
 
 from accounts.models import Address
 from cart.views import get_or_create_cart
+from promotions.models import Coupon
 
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
@@ -13,6 +15,9 @@ from .serializers import OrderSerializer
 
 class CheckoutView(APIView):
     """POST /api/v1/checkout — UC-01: إنشاء الطلب من السلة الحالية بحالة pending.
+
+    يدعم كوبون خصم اختياري (coupon_code) — يُعاد التحقق منه وحساب الخصم من جديد
+    هنا مباشرة (لا يُعتمد على أي قيمة خصم محسوبة سابقاً بطرف العميل).
 
     لا يُخصَم المخزون هنا — يُخصَم فقط بعد تأكيد الدفع عبر Webhook موقَّع
     (راجع ARCHITECTURE.md: مبدأ أمان أساسي).
@@ -38,8 +43,29 @@ class CheckoutView(APIView):
                     {"error": f"الكمية المطلوبة من '{item.product.name}' تتجاوز المخزون المتوفر."}
                 )
 
-        total = sum(item.product.price * item.quantity for item in items)
-        order = Order.objects.create(user=request.user, address=address, total_amount=total)
+        subtotal = sum(item.product.price * item.quantity for item in items)
+
+        coupon = None
+        discount_amount = 0
+        coupon_code = (request.data.get("coupon_code") or "").strip().upper()
+        if coupon_code:
+            coupon = Coupon.objects.filter(code__iexact=coupon_code).first()
+            if not coupon:
+                raise ValidationError({"error": "رمز الكوبون غير صحيح."})
+            is_valid, message = coupon.is_valid_now()
+            if not is_valid:
+                raise ValidationError({"error": message})
+            discount_amount = coupon.calculate_discount(subtotal)
+
+        total = subtotal - discount_amount
+
+        order = Order.objects.create(
+            user=request.user,
+            address=address,
+            coupon=coupon,
+            discount_amount=discount_amount,
+            total_amount=total,
+        )
 
         OrderItem.objects.bulk_create(
             [
@@ -53,6 +79,9 @@ class CheckoutView(APIView):
                 for item in items
             ]
         )
+
+        if coupon:
+            Coupon.objects.filter(pk=coupon.pk).update(times_used=F("times_used") + 1)
 
         cart.items.all().delete()
 
